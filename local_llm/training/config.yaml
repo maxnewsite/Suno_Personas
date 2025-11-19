@@ -1,0 +1,54 @@
+# Training Configuration for Song Score LLM
+
+# Model
+model_name: "meta-llama/Llama-3.1-8B-Instruct"
+use_4bit: true
+use_flash_attention: true
+
+# LoRA Configuration
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+
+# Training Hyperparameters
+training:
+  num_epochs: 3
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2.0e-4
+  warmup_ratio: 0.05
+  lr_scheduler: "cosine"
+  optimizer: "paged_adamw_32bit"
+  max_grad_norm: 0.3
+  weight_decay: 0.001
+
+# Data
+data:
+  max_seq_length: 1024
+  train_file: "train.jsonl"
+  val_file: "val.jsonl"
+  test_file: "test.jsonl"
+
+# Logging
+logging:
+  log_steps: 10
+  eval_steps: 100
+  save_steps: 500
+  use_wandb: true
+  wandb_project: "song-score-llm"
+
+# Compute
+compute:
+  bf16: true
+  tf32: true
+  gradient_checkpointing: true
+  group_by_length: true

@@ -13,9 +13,17 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
 
     # LLM Configuration
-    llm_provider: str = "openai"  # or "anthropic"
+    llm_provider: str = "openai"  # "openai", "anthropic", "hybrid", or "local"
     openai_model: str = "gpt-4-turbo-preview"
     anthropic_model: str = "claude-3-sonnet-20240229"
+
+    # Local LLM Configuration (for hybrid/local mode)
+    local_llm_url: str = ""  # e.g., "http://localhost:8001"
+    use_local_llm: bool = False
+
+    # Hybrid Mode Configuration
+    enable_hybrid_mode: bool = False  # Use local + cloud fallback
+    critical_personas_cloud: bool = True  # Use cloud for critical personas
 
     # File Upload Configuration
     max_file_size_mb: int = 10
@@ -27,6 +35,15 @@ class Settings(BaseSettings):
 
     # Rate Limiting
     rate_limit_per_hour: int = 10
+
+    # Caching Configuration
+    enable_caching: bool = False
+    redis_url: str = "redis://localhost:6379"
+    cache_ttl_seconds: int = 86400  # 24 hours
+
+    # Tiered Analysis
+    free_tier_personas: int = 3  # Number of personas for free tier
+    paid_tier_personas: int = 10  # Number of personas for paid tier
 
     # Scoring Weights
     audio_quality_weight: float = 0.15
